@@ -1,8 +1,8 @@
 require_relative '../crawler'
-print "Enter link to crawl: "
+print "Enter link to crawl:\nE.g https://python.org > "
 link = gets.chomp
 puts
-print "Allow external site to crawl? (y/n): "
+print "Allow external site to crawl? (y/n) > "
 external_site_crawled = gets.chomp.downcase
 external_site_crawled = external_site_crawled.eql?("y") ? true : false
 if link.nil?
@@ -12,7 +12,7 @@ else
   crawler = Crawler.new link, external_site_crawled
   already_exists = crawler.exists?
   if already_exists
-    print "You have already crawled this site. Do you want to continue? y/n: "
+    print "You have already crawled this site. Do you want to continue? y/n > "
     choice = gets.chomp.downcase
   end
   if choice.eql?('y') || !already_exists

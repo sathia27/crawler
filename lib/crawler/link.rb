@@ -48,10 +48,10 @@ class Link
       rescue => e
         puts e
         @log_line_pointer += 1
-        @logger_file.close
+        @logger_file.close if @logger_file
       end
     end
-    @logger_file.close
+    @logger_file.close if @logger_file
   end
 
 
