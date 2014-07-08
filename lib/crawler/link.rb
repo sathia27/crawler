@@ -1,11 +1,12 @@
 require 'nokogiri'
 require 'open-uri'
 require_relative '../services/logger'
+require_relative '../services/url_helper'
 
 class Link
 
   include Logger
-  include UrlParser
+  include UrlHelper
 
   def initialize url, external_site_allowed
     @url = url

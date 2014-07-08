@@ -1,4 +1,4 @@
-module UrlParser
+module UrlHelper
 
   def format links
     links.map do |link|

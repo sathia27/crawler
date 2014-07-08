@@ -1,6 +1,5 @@
 require 'json'
 require 'open-uri'
-require_relative 'url_parser'
 
 module Logger
   
