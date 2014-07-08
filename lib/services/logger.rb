@@ -4,12 +4,10 @@ require_relative 'url_parser'
 
 module Logger
   
-  include UrlParser
-
   def create_log
     # creates log file with url as file name
     Dir.mkdir("data") rescue false
-    File.open(file_name, "w")
+    File.open(file_name, "w") if file_name
   end
 
   def file_exists?
@@ -28,7 +26,7 @@ module Logger
     log_file and !File.exists?(file_name)
   end
 
-  def find index
+  def read index
     puts "Indexing #{index} of #{@results.uniq.count}"
     @results[index].strip rescue nil
   end

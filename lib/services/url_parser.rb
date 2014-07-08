@@ -1,13 +1,35 @@
 module UrlParser
 
   def format links
-    links.collect do |link|
+    links.map do |link|
       link = remove_fragment link
       unless link.nil? or link.eql?("")
-        link = link.gsub(/\?(.*)|\/\?(.*)/, "")
-        link = link[-1] == "/" ? link.chop : link
-        link = full_url link
+        link = remove_query_string(link)
+        link = whitelist link if link
       end
+    end
+  end
+
+  def remove_query_string link
+    link[-1] == "/" ? link.chop : link
+    link.gsub(/\?(.*)|\/\?(.*)/, "")
+  end
+
+
+  def whitelist link
+    return unless link.scan(/mailto:|tel:/).empty?
+    if link.start_with?(host_name)
+      link
+    else
+      validate_url_without_hostname(link)
+    end
+  end
+
+  def validate_url_without_hostname link
+    if external_url?(link)
+      link if external_site_allowed?
+    else
+      link.start_with?("/") ? host_name+link : host_name+"/"+link
     end
   end
 
@@ -15,15 +37,6 @@ module UrlParser
     link_uri = URI.parse(link) rescue false
     if external_sited_allow || link_uri.host.eql?(uri.host)
       link_uri.pathname
-    end
-  end
-
-  def full_url link
-    fu = nil
-    if link.start_with?(host_name)
-      fu = link
-    elsif link.start_with?("/")
-      fu = host_name + link
     end
   end
 
@@ -36,8 +49,8 @@ module UrlParser
     URI.parse(@url)
   end
 
-  def external_sited_allow
-    false
+  def external_url? link
+    !link.scan(/http:|https:/).empty? && link.scan(/#{log_file}/).empty?
   end
 
   def url_scheme
