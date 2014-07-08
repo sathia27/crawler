@@ -59,9 +59,6 @@ class Link
       links = format(links).compact.uniq
       links = remove_existing_links_from(links)
       @results += links
-      puts links
-      puts @logger_file
-      puts @logger_file.write(links.join("\n"))
       @logger_file.write(links.join("\n"))
     end
     @log_line_pointer += 1
